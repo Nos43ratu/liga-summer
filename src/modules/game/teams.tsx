@@ -179,11 +179,11 @@ function Score() {
 
   const { minutes, seconds } = useTimerDown(date);
 
+  console.log("round", round);
+
   return (
     <div className="flex flex-col text-center">
-      <div className="text-[32px] font-bold z-20">
-        {score_mock[(round ?? 0) - 1]}
-      </div>
+      <div className="text-[32px] font-bold z-20">{score_mock[round ?? 0]}</div>
 
       <div>
         <span className="text-[18px] font-bold z-20">
