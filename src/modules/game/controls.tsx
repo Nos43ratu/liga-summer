@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { DeadPig } from "@/components/DeadPig";
 import { useDeadStateStore } from "@/modules/game/model/dead-state-store";
+import { Fatal } from "@/components/fatal";
 
 export function Controls() {
   const router = useRouter();
@@ -224,6 +225,8 @@ export function Controls() {
             Беспощадных ставок
           </p>
 
+          <img src="/fatality.png" alt="" />
+
           <button
             className="text-sm mt-8 w-full h-10 rounded bg-primary-dark flex items-center justify-center text-white"
             onClick={() => {
@@ -262,6 +265,8 @@ export function Controls() {
             <br />
             Беспощадных ставок
           </p>
+
+          <img src="/fatality.png" alt="" />
 
           <button
             className="text-sm mt-8 w-full h-10 rounded bg-primary-dark flex items-center justify-center text-white"
