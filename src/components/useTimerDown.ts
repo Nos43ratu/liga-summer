@@ -47,12 +47,17 @@ export const useTimerDown = (finishDate: Date): IDate => {
 
   return date;
 };
-
-// export const useTimerTo = (fromM: , to: 0): IDate => {
-//  const [minute, setMinute] = useState(0)
-//   const [seconds, setSeconds] = useState()
+//
+// export const useTimerTo = (
+//   fromM: number,
+//   fromS: number,
+//   toM: number,
+//   toS: number,
+// ): string => {
+//   const [minute, setMinute] = useState(fromM);
+//   const [seconds, setSeconds] = useState(fromS);
 //
 //   useEffect(() => {
-//
-//   }, [])
+//     const timer = setInterva(() => {});
+//   }, []);
 // };

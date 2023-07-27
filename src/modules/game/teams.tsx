@@ -1,6 +1,5 @@
 import { useMatchStateStore } from "@/modules/game/model/match-state-store";
-import { useTimerDown, useTimerTo } from "@/components/useTimerDown";
-import { useTimerStateStore } from "@/modules/game/model/timer-state-store";
+import { useTimerDown } from "@/components/useTimerDown";
 import { useGameStateStore } from "@/modules/game/model/game-state-store";
 import { twMerge } from "tailwind-merge";
 import { animated, useSpring } from "react-spring";
