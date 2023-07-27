@@ -162,13 +162,13 @@ export function Controls() {
 
   //start leaderboard betting
   function startLeaderboardBetting() {
-    const [pl, amount] = simulatePlayersData(players, 0);
+    // const [pl, amount] = simulatePlayersData(players, 0);
     set_round((round ?? 1) + 1);
     set_round_state("started");
 
     // @ts-ignore
-    set_players(pl);
-    set_prize_pool(prize_pool + amount);
+    // set_players(pl);
+    // set_prize_pool(prize_pool + amount);
     set_markets(MARKETS_DATA[round ?? 1]);
 
     set_bets([]);
