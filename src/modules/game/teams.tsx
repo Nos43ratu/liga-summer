@@ -135,7 +135,7 @@ function Progress() {
         </svg>
       </animated.div>
 
-      <span className="absolute top-[90px] right-4">`15</span>
+      <span className="absolute top-[100px] right-4">`15</span>
     </>
   );
 }
@@ -186,8 +186,9 @@ function Score() {
       <div className="text-[32px] font-bold z-20">
         {score_mock[(round ?? 0) - 1]}
       </div>
+
       <div>
-        <span className="text-[20px] font-bold z-20">
+        <span className="text-[18px] font-bold z-20">
           До конца раунда: {minutes}:{seconds}
         </span>
       </div>
