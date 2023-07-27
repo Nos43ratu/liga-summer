@@ -12,6 +12,9 @@ module.exports = {
         "primary-dark": "#00AB4E",
         "text-secondary": "#5D5D5E",
       },
+      fontFamily: {
+        mono: ["var(--font-blody)"],
+      },
     },
   },
   plugins: [],

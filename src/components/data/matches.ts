@@ -9,24 +9,10 @@ export type Match = {
 export const MATCHES_DATA = [
   {
     id: 1,
-    name: "Арсенал Лондон - Ноттингем Форест",
+    name: "Спартак - ЦСК",
     sport: "Футбол",
-    league: "Англия/АПЛ",
+    league: "Очень крутая лига",
     start_date: generate_start_date(100),
-  },
-  {
-    id: 2,
-    name: "Арсенал Лондон - Ноттингем Форест",
-    sport: "Футбол",
-    league: "Англия/АПЛ",
-    start_date: generate_start_date(200),
-  },
-  {
-    id: 3,
-    name: "Арсенал Лондон - Ноттингем Форест",
-    sport: "Футбол",
-    league: "Англия/АПЛ",
-    start_date: generate_start_date(300),
   },
 ];
 

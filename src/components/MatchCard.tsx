@@ -23,7 +23,7 @@ export function MatchCard({ match }: MatchCardProps) {
         />
       </div>
 
-      <div className="mt-[82px] rounded-lg bg-white p-3 relative z-20 flex flex-col shadow-[-2px_-4px_4px_0px_rgba(0,0,0,0.25)]">
+      <div className="mt-[503px] rounded-lg bg-white p-3 relative z-20 flex flex-col shadow-[-2px_-4px_4px_0px_rgba(0,0,0,0.25)]">
         <div className="flex flex-col space-y-1 text-center">
           <h2 className="text-base leading-6 font-bold">{match.name}</h2>
 

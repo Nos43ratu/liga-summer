@@ -11,7 +11,7 @@ export function Teams() {
     <div className="bg-[#41AD70] w-full px-4 py-6 flex justify-between items-center text-white rounded-xl">
       <div className="flex space-x-3 items-center">
         <div className="bg-white overflow-hidden rounded-full ">
-          <img src="/cska.png" alt="" className="w-10 h-10 object-contain" />
+          <img src="/spartak.png" alt="" className="w-10 h-10 object-contain" />
         </div>
 
         <p className="text-sm font-medium leading-5">
@@ -31,7 +31,7 @@ export function Teams() {
         <p className="text-sm font-medium leading-5">ЦСКА</p>
 
         <div className="bg-white overflow-hidden rounded-full ">
-          <img src="/spartak.png" alt="" className="w-10 h-10 object-contain" />
+          <img src="/cska.png" alt="" className="w-10 h-10 object-contain" />
         </div>
       </div>
     </div>

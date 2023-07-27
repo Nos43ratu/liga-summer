@@ -4,6 +4,7 @@ export type Player = {
   id: number;
   name: string;
   balance: number;
+  is_alive: boolean;
 };
 
 type PlayersStateStore = {

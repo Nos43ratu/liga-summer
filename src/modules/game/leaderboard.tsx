@@ -15,7 +15,7 @@ export function Leaderboard() {
         Таблица участников
       </span>
 
-      <div className="flex flex-col space-y-4" ref={animationParent}>
+      <div className="flex flex-col space-y-4 pb-10" ref={animationParent}>
         {players.map((player, index) =>
           player.id === 1 ? (
             <div key={player.id} className="flex items-center justify-between">
