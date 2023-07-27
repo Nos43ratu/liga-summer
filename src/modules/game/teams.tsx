@@ -134,8 +134,6 @@ function Progress() {
           </defs>
         </svg>
       </animated.div>
-
-      <span className="absolute top-[100px] right-4">`15</span>
     </>
   );
 }
