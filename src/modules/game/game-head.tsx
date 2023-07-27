@@ -3,19 +3,24 @@ import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { animated, useSpring } from "react-spring";
 import { useUserStateStore } from "@/modules/game/model/user-state-store";
+import { Grid } from "@/components/grid";
 
 export function GameHead() {
   const { round, round_state, set_round_state } = useGameStateStore();
   const { is_won } = useUserStateStore();
 
+  if (round === null) return <div className="mt-6"></div>;
+
   return (
     <div className="h-[320px] flex flex-col relative overflow-hidden flex-shrink-0">
-      <div className="absolute z-10 bg-white w-[769px] h-[769px] rounded-full left-1/2 -translate-x-1/2 bottom-[30px]"></div>
+      <div className="absolute z-10 w-[548px] h-[474px] rounded-full left-1/2 -translate-x-1/2 bottom-[65px]">
+        <Grid />
+      </div>
 
       <div className="relative z-20 w-full h-full flex">
         <StatusText />
 
-        <Map />
+        {/*<Map />*/}
 
         {round_state === "in_progress" && !is_won && <Pig />}
       </div>

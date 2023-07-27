@@ -1,11 +1,20 @@
-import { useMatchStateStore } from "@/modules/game/model/match-state-store";
 import { useTimerDown, useTimerTo } from "@/components/useTimerDown";
 import { useGameStateStore } from "@/modules/game/model/game-state-store";
 import { twMerge } from "tailwind-merge";
 import { animated, useSpring } from "react-spring";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { generate_start_date } from "@/components/data/matches";
 import { EVENTS_DATA } from "@/components/data/events";
+
+const minues_mock: Record<number, string> = {
+  1: "10",
+  2: "25",
+  3: "43",
+  4: "51",
+  5: "63",
+  6: "75",
+  7: "89",
+};
 
 export function Teams() {
   const { round, round_state } = useGameStateStore();
@@ -50,7 +59,7 @@ export function Teams() {
       <div className="flex flex-col px-4 text-sm">
         {EVENTS_DATA[(round ?? 0) - 2]?.map((e) => (
           <span className="text-base font-normal">
-            {(round ?? 0) - 1}` {"   "} {e.title}
+            {minues_mock[round ?? 0]}` {"   "} {e.title}
           </span>
         ))}
       </div>
@@ -143,8 +152,17 @@ function Timer() {
   );
 }
 
+const score_mock: Record<number, string> = {
+  1: "0:0",
+  2: "0:1",
+  3: "0:2",
+  4: "1:2",
+  5: "2:2",
+  6: "3:2",
+  7: "4:2",
+};
+
 function Score() {
-  const { score } = useMatchStateStore();
   const { round } = useGameStateStore();
 
   const date = useMemo(() => {
@@ -164,11 +182,13 @@ function Score() {
   const { minutes, seconds } = useTimerDown(date);
 
   return (
-    <div className="flex flex-col">
-      <div className="text-[32px] font-bold z-20">{score}</div>
+    <div className="flex flex-col text-center">
+      <div className="text-[32px] font-bold z-20">
+        {score_mock[(round ?? 0) - 1]}
+      </div>
       <div>
-        <span className="text-[22px] font-bold z-20">
-          {minutes}:{seconds}
+        <span className="text-[20px] font-bold z-20">
+          До конца раунда: {minutes}:{seconds}
         </span>
       </div>
     </div>

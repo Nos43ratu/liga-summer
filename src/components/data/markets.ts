@@ -3,18 +3,30 @@ export const WINNING_MARKETS_DATA = [
   [
     {
       id: 11,
+      type: "second",
+    },
+    {
+      id: 13,
       type: "first",
     },
     {
       id: 12,
-      type: "second",
+      type: "first",
     },
   ],
   // round 2
   [
     {
-      id: 21,
+      id: 22,
       type: "first",
+    },
+    {
+      id: 24,
+      type: "second",
+    },
+    {
+      id: 25,
+      type: "second",
     },
   ],
   // round 3
@@ -27,40 +39,76 @@ export const WINNING_MARKETS_DATA = [
       id: 32,
       type: "second",
     },
+    {
+      id: 35,
+      type: "second",
+    },
   ],
   // round 4
   [
     {
+      id: 45,
+      type: "first",
+    },
+    {
+      id: 42,
+      type: "first",
+    },
+    {
       id: 41,
       type: "first",
+    },
+    {
+      id: 43,
+      type: "second",
     },
   ],
   // round 5
   [
     {
-      id: 51,
+      id: 55,
       type: "first",
     },
     {
       id: 52,
       type: "second",
     },
+    {
+      id: 51,
+      type: "second",
+    },
   ],
   // round 6
   [
     {
-      id: 61,
+      id: 65,
       type: "first",
+    },
+    {
+      id: 63,
+      type: "first",
+    },
+    {
+      id: 62,
+      type: "second",
+    },
+    {
+      id: 61,
+      type: "second",
     },
   ],
   // round 7
   [
     {
-      id: 71,
+      id: 75,
       type: "first",
     },
     {
-      id: 72,
+      id: 71,
+      type: "second",
+    },
+    {
+      id: 73,
       type: "second",
     },
   ],

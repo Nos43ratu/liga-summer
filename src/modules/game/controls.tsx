@@ -42,15 +42,18 @@ export function Controls() {
   const [betsWon, setBetsWon] = useState(0);
 
   useEffect(() => {
-    if (round) return;
-
     const timer = setTimeout(() => {
       set_round(1);
       set_round_state("started");
     }, 30000);
 
+    if (round) {
+      clearTimeout(timer);
+      return;
+    }
+
     return () => clearTimeout(timer);
-  }, []);
+  }, [round]);
 
   //simulate users join
   const addPlayers = useCallback(() => {
@@ -122,6 +125,11 @@ export function Controls() {
       return set_is_lost(true);
     }
 
+    if (!pl.find((e) => e.id === 1)) {
+      setLostMemModal(true);
+      return set_is_lost(true);
+    }
+
     setWon(win);
 
     set_round_state("ended");
@@ -155,6 +163,9 @@ export function Controls() {
   //start leaderboard betting
   function startLeaderboardBetting() {
     const [pl, amount] = simulatePlayersData(players, 0);
+    set_round((round ?? 1) + 1);
+    set_round_state("started");
+
     // @ts-ignore
     set_players(pl);
     set_prize_pool(prize_pool + amount);
@@ -624,7 +635,6 @@ function simulatePlayersData(
     const player = prev_players[i];
 
     if (player.id === 1) {
-      console.log("finded");
       new_players.push({
         ...player,
         balance,
@@ -640,10 +650,10 @@ function simulatePlayersData(
   new_players.sort((a, b) => b.balance - a.balance);
 
   const alive_players = [
-    ...new_players.slice(0, Math.floor(new_players.length / 2)),
+    ...new_players.slice(0, Math.round(new_players.length / 2)),
   ];
   const dead_players_amount = [
-    ...new_players.slice(Math.floor(new_players.length / 2)),
+    ...new_players.slice(Math.round(new_players.length / 2)),
   ].reduce((acc, player) => {
     return acc + player.balance;
   }, 0);
