@@ -4,12 +4,14 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useUserStateStore } from "@/modules/game/model/user-state-store";
 import { useState } from "react";
 import { useDeadStateStore } from "@/modules/game/model/dead-state-store";
+import { twMerge } from "tailwind-merge";
 
 export function Leaderboard() {
   const { round } = useGameStateStore();
   const { is_lost } = useUserStateStore();
   const { players } = usePlayersStateStore();
   const [aciteBet, setActiveBet] = useState<number | null>(null);
+  const [betType, setBetType] = useState<null | "round" | "tournament">(null);
   const [amoun, setAmount] = useState(0);
   const { bet, setBet } = useDeadStateStore();
 
@@ -22,10 +24,13 @@ export function Leaderboard() {
       id,
       amount,
       coefficient,
+      type: betType ?? "round",
     });
 
     setActiveBet(null);
   }
+
+  console.log(aciteBet, betType);
 
   return (
     <div className="flex flex-col space-y-3 px-4 mt-8">
@@ -72,11 +77,22 @@ export function Leaderboard() {
               <div className="flex space-x-1 w-full">
                 <button
                   onClick={() => {
-                    if (bet?.id === player.id) return;
+                    if (bet) return;
 
+                    setBetType("round");
                     setActiveBet(player.id);
                   }}
-                  className="rounded flex items-center justify-between text-black border flex-1 border-primary px-4 py-3 leading-4 text-[13px]"
+                  className={twMerge(
+                    "rounded flex items-center justify-between border flex-1 border-primary px-4 py-3 leading-4 text-[13px]",
+                    aciteBet === player.id && betType === "round"
+                      ? "bg-primary text-white"
+                      : "text-black",
+                    bet?.id === player.id
+                      ? bet?.type === "round"
+                        ? "bg-primary text-white"
+                        : "bg-gray-400 text-white"
+                      : "text-black",
+                  )}
                 >
                   <span className="text-[#7A7A7A]">Победит в раунде</span>
 
@@ -85,11 +101,22 @@ export function Leaderboard() {
 
                 <button
                   onClick={() => {
-                    if (bet?.id === player.id) return;
+                    if (bet) return;
 
+                    setBetType("tournament");
                     setActiveBet(player.id);
                   }}
-                  className="rounded flex items-center justify-between text-black border flex-1 border-primary px-4 py-3 leading-4 text-[13px]"
+                  className={twMerge(
+                    "rounded flex items-center justify-between text-black border flex-1 border-primary px-4 py-3 leading-4 text-[13px]",
+                    aciteBet === player.id && betType === "tournament"
+                      ? "bg-primary text-white"
+                      : "text-black",
+                    bet?.id === player.id
+                      ? bet?.type === "tournament"
+                        ? "bg-primary text-white"
+                        : "bg-gray-400 text-white"
+                      : "text-black",
+                  )}
                 >
                   <span className="text-[#7A7A7A]">Победит в турнире</span>
 
@@ -97,7 +124,15 @@ export function Leaderboard() {
                 </button>
               </div>
 
-              {aciteBet === player.id && (
+              {bet?.id === player.id && (
+                <div className="flex justify-between mt-1 items-center">
+                  <span className="text black text-sm">Ваша ставка</span>
+
+                  <span>{bet.amount} L</span>
+                </div>
+              )}
+
+              {aciteBet === player.id && !bet && (
                 <div className="flex flex-col mt-5">
                   <span className="text-center w-full font-medium text-sm">
                     Сделайте ставку

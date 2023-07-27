@@ -9,7 +9,7 @@ export type Match = {
 export const MATCHES_DATA = [
   {
     id: 1,
-    name: "Спартак - ЦСК",
+    name: "Спартак - ЦСКА",
     sport: "Футбол",
     league: "Очень крутая лига",
     start_date: generate_start_date(100),

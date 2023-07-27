@@ -5,6 +5,7 @@ type DeadState = {
     id: number;
     amount: number;
     coefficient: number;
+    type: "round" | "tournament";
   } | null;
 
   setBet: (bet: DeadState["bet"]) => void;

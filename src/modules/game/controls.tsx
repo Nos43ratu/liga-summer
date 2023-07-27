@@ -41,6 +41,17 @@ export function Controls() {
   const [won, setWon] = useState(0);
   const [betsWon, setBetsWon] = useState(0);
 
+  useEffect(() => {
+    if (round) return;
+
+    const timer = setTimeout(() => {
+      set_round(1);
+      set_round_state("started");
+    }, 30000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   //simulate users join
   const addPlayers = useCallback(() => {
     const players_count = players.length;
@@ -86,7 +97,10 @@ export function Controls() {
 
   // end round
   const handleEndRound = () => {
-    const [pl, amount] = simulatePlayersData(players, balance);
+    const [win, count] = calculateWin(bets, round ?? 1);
+    set_balance(Math.floor(balance + win));
+
+    const [pl, amount] = simulatePlayersData(players, balance + win);
     // @ts-ignore
     set_players(pl);
     set_prize_pool(prize_pool + amount);
@@ -102,9 +116,6 @@ export function Controls() {
       setLostModal(true);
       return set_is_lost(true);
     }
-
-    const [win, count] = calculateWin(bets, round ?? 1);
-    set_balance(Math.floor(balance + win));
 
     if (balance + win === 0) {
       setLostMemModal(true);
@@ -143,7 +154,7 @@ export function Controls() {
 
   //start leaderboard betting
   function startLeaderboardBetting() {
-    const [pl, amount] = simulatePlayersData(players, balance);
+    const [pl, amount] = simulatePlayersData(players, 0);
     // @ts-ignore
     set_players(pl);
     set_prize_pool(prize_pool + amount);
@@ -154,7 +165,16 @@ export function Controls() {
     set_is_lost(true);
   }
 
-  const text = round === null ? "Start round" : "Skip round";
+  const text: Record<number, string> = {
+    0: "К началу матча",
+    1: "К концу первого раунда",
+    2: "К концу второго раунда",
+    3: "К концу третьего раунда",
+    4: "К концу четвертого раунда",
+    5: "К концу пятого раунда",
+    6: "К концу шестого раунда",
+    7: "К концу матча",
+  };
 
   return (
     <>
@@ -164,7 +184,7 @@ export function Controls() {
         }}
         className="bg-primary text-white rounded px-2 py-1 fixed bottom-2 right-2"
       >
-        {text}
+        {text[round ?? 0]}
       </button>
 
       <Modal
@@ -598,14 +618,16 @@ function simulatePlayersData(
   balance: number,
 ): [Player[], number] {
   let new_players = [];
+  const prev_players = [...players];
 
-  for (let i = 0; i < players.length; i++) {
-    const player = players[i];
+  for (let i = 0; i < prev_players.length; i++) {
+    const player = prev_players[i];
 
     if (player.id === 1) {
+      console.log("finded");
       new_players.push({
         ...player,
-        balance: balance,
+        balance,
       });
     } else {
       new_players.push({

@@ -1,10 +1,11 @@
 import { useMatchStateStore } from "@/modules/game/model/match-state-store";
-import { useTimerDown } from "@/components/useTimerDown";
+import { useTimerDown, useTimerTo } from "@/components/useTimerDown";
 import { useGameStateStore } from "@/modules/game/model/game-state-store";
 import { twMerge } from "tailwind-merge";
 import { animated, useSpring } from "react-spring";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { generate_start_date } from "@/components/data/matches";
+import { EVENTS_DATA } from "@/components/data/events";
 
 export function Teams() {
   const { round, round_state } = useGameStateStore();
@@ -12,33 +13,47 @@ export function Teams() {
   return (
     <div
       className={twMerge(
-        "bg-[#41AD70] overflow-hidden relative w-full px-4 py-6 flex justify-between items-center text-white rounded-xl",
-        round !== null && "pb-12",
+        "bg-[#41AD70] overflow-hidden relative w-full text-white rounded-xl",
+        round !== null && "pb-2",
       )}
     >
-      <div className="flex space-x-3 items-center z-20">
-        <div className="bg-white overflow-hidden rounded-full ">
-          <img src="/spartak.png" alt="" className="w-10 h-10 object-contain" />
+      <div className="px-4 py-6 flex justify-between items-center ">
+        <div className="flex space-x-3 items-center z-20">
+          <div className="bg-white overflow-hidden rounded-full ">
+            <img
+              src="/spartak.png"
+              alt=""
+              className="w-10 h-10 object-contain"
+            />
+          </div>
+
+          <p className="text-sm font-medium leading-5">
+            Спартак
+            <br />
+            Москва
+          </p>
         </div>
 
-        <p className="text-sm font-medium leading-5">
-          Спартак
-          <br />
-          Москва
-        </p>
-      </div>
+        {round === null ? <Timer /> : <Score />}
 
-      {round === null ? <Timer /> : <Score />}
+        <div className="flex space-x-3 items-center z-20">
+          <p className="text-sm font-medium leading-5">ЦСКА</p>
 
-      <div className="flex space-x-3 items-center z-20">
-        <p className="text-sm font-medium leading-5">ЦСКА</p>
-
-        <div className="bg-white overflow-hidden rounded-full ">
-          <img src="/cska.png" alt="" className="w-10 h-10 object-contain" />
+          <div className="bg-white overflow-hidden rounded-full ">
+            <img src="/cska.png" alt="" className="w-10 h-10 object-contain" />
+          </div>
         </div>
       </div>
 
       {round !== null && round_state === "in_progress" && <Progress />}
+
+      <div className="flex flex-col px-4 text-sm">
+        {EVENTS_DATA[(round ?? 0) - 2]?.map((e) => (
+          <span className="text-base font-normal">
+            {(round ?? 0) - 1}` {"   "} {e.title}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
@@ -130,14 +145,32 @@ function Timer() {
 
 function Score() {
   const { score } = useMatchStateStore();
-  // const { minutes, seconds } = useTimerUp();
+  const { round } = useGameStateStore();
+
+  const date = useMemo(() => {
+    const dates: Record<number, number> = {
+      1: 900,
+      2: 900,
+      3: 900,
+      4: 600,
+      5: 600,
+      6: 600,
+      7: 600,
+    };
+
+    return generate_start_date(dates[round ?? 0]);
+  }, [round]);
+
+  const { minutes, seconds } = useTimerDown(date);
 
   return (
     <div className="flex flex-col">
       <div className="text-[32px] font-bold z-20">{score}</div>
-      {/*<div>*/}
-      {/*  {minutes}` {seconds}*/}
-      {/*</div>*/}
+      <div>
+        <span className="text-[22px] font-bold z-20">
+          {minutes}:{seconds}
+        </span>
+      </div>
     </div>
   );
 }
