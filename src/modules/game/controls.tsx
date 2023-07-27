@@ -14,7 +14,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { DeadPig } from "@/components/DeadPig";
 import { useDeadStateStore } from "@/modules/game/model/dead-state-store";
-import { Fatal } from "@/components/fatal";
 
 export function Controls() {
   const router = useRouter();
