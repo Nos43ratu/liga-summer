@@ -20,7 +20,7 @@ export function MatchCard({ match }: MatchCardProps) {
         <Image
           src="/match-bg.png"
           alt="Picture of the author"
-          className="z-10  "
+          className="z-10 object-cover"
           fill
         />
       </div>

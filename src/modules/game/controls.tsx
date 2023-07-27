@@ -13,6 +13,7 @@ import { useUserStateStore } from "@/modules/game/model/user-state-store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { DeadPig } from "@/components/DeadPig";
+import { useDeadStateStore } from "@/modules/game/model/dead-state-store";
 
 export function Controls() {
   const router = useRouter();
@@ -29,7 +30,10 @@ export function Controls() {
   const { markets, set_markets } = useMarketsStateStore();
   const { balance, set_balance, is_lost, is_won, set_is_won, set_is_lost } =
     useUserStateStore();
+  const { bet } = useDeadStateStore();
 
+  const [isKingWinModal, setIsKingWinModal] = useState(false);
+  const [isKingLostModal, setIsKingLostModal] = useState(false);
   const [lostMemModal, setLostMemModal] = useState(false);
   const [lostModal, setLostModal] = useState(false);
   const [isWon, setIsWon] = useState(false);
@@ -82,6 +86,18 @@ export function Controls() {
 
   // end round
   const handleEndRound = () => {
+    const [pl, amount] = simulatePlayersData(players, balance);
+    // @ts-ignore
+    set_players(pl);
+    set_prize_pool(prize_pool + amount);
+
+    if (is_lost) {
+      const isBetWon = pl.find((p) => p.id === bet?.id);
+      isBetWon ? setIsKingWinModal(true) : setIsKingLostModal(true);
+
+      return;
+    }
+
     if (bets.length === 0) {
       setLostModal(true);
       return set_is_lost(true);
@@ -111,10 +127,6 @@ export function Controls() {
 
     set_round((round ?? 1) + 1);
 
-    const [pl, amount] = simulatePlayersData(players, balance);
-    // @ts-ignore
-    set_players(pl);
-    set_prize_pool(prize_pool + amount);
     set_markets(MARKETS_DATA[round ?? 1]);
 
     set_bets([]);
@@ -467,6 +479,86 @@ export function Controls() {
 
           <button
             className="text-sm mt-2 w-full h-10 rounded border-primary-dark border bg-white flex items-center justify-center text-primary"
+            onClick={() => router.push("/")}
+          >
+            Главная
+          </button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isKingWinModal}
+        onClose={() => {
+          router.push("/");
+        }}
+      >
+        <div className="flex flex-col px-4 py-9 items-center text-center">
+          <span className="text-[20px] leading-[24px] font-medium">
+            BestBigBetter
+          </span>
+
+          <span className="mt-1.5 uppercase text-primary text-[32px] leading-[24px] font-bold">
+            вы мудрец!
+          </span>
+
+          <p className="text-center  mt-2 text-black text-base leading-5 italic">
+            “мертвый мудрец даже с деньгами
+            <br />
+            останется мертвым”
+          </p>
+
+          <p className="text-[10px] text-end leading-3 ml-auto mr-3">
+            – книга мудрости
+            <br />
+            Беспощадных ставок
+          </p>
+
+          <span className="text-[17px] leading-5 font-bold text-black mt-9">
+            сила предвидения принесла вам
+          </span>
+
+          <span className="text-[40px] mt-2 font-bold">
+            {Math.floor((bet?.amount ?? 0) * (bet?.coefficient ?? 0))} L
+          </span>
+
+          <button
+            className="text-sm mt-9 w-full h-10 rounded border-primary-dark border bg-white flex items-center justify-center text-primary"
+            onClick={() => router.push("/")}
+          >
+            Главная
+          </button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={isKingLostModal}
+        onClose={() => {
+          router.push("/");
+        }}
+      >
+        <div className="flex flex-col px-4 py-9 items-center text-center">
+          <span className="text-[20px] leading-[24px] font-medium">
+            BestBigBetter
+          </span>
+
+          <span className="mt-1.5 uppercase text-[#FF4944] text-[24px] leading-[24px] font-bold">
+            это был двойной просчет
+          </span>
+
+          <p className="text-center  mt-2 text-black text-base leading-5 italic">
+            “мёртвому глупцу поможет только
+            <br />
+            реинкарнация”
+          </p>
+
+          <p className="text-[10px] text-end leading-3 ml-auto mr-3">
+            – книга мудрости
+            <br />
+            Беспощадных ставок
+          </p>
+
+          <button
+            className="text-sm mt-9 w-full h-10 rounded border-primary-dark border bg-white flex items-center justify-center text-primary"
             onClick={() => router.push("/")}
           >
             Главная
