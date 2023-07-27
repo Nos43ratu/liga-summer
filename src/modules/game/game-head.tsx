@@ -2,9 +2,11 @@ import { useGameStateStore } from "@/modules/game/model/game-state-store";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { animated, useSpring } from "react-spring";
+import { useUserStateStore } from "@/modules/game/model/user-state-store";
 
 export function GameHead() {
   const { round, round_state, set_round_state } = useGameStateStore();
+  const { is_won } = useUserStateStore();
 
   return (
     <div className="h-[320px] flex flex-col relative overflow-hidden flex-shrink-0">
@@ -15,7 +17,7 @@ export function GameHead() {
 
         <Map />
 
-        {round_state === "in_progress" && <Pig />}
+        {round_state === "in_progress" && !is_won && <Pig />}
       </div>
     </div>
   );

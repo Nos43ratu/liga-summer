@@ -27,8 +27,10 @@ export function Controls() {
   const { players, set_players } = usePlayersStateStore();
   const { bets, set_bets } = useBetsStateStore();
   const { markets, set_markets } = useMarketsStateStore();
-  const { balance, set_balance, is_lost, set_is_lost } = useUserStateStore();
+  const { balance, set_balance, is_lost, is_won, set_is_won, set_is_lost } =
+    useUserStateStore();
 
+  const [lostMemModal, setLostMemModal] = useState(false);
   const [lostModal, setLostModal] = useState(false);
   const [isWon, setIsWon] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -86,12 +88,14 @@ export function Controls() {
     }
 
     const [win, count] = calculateWin(bets, round ?? 1);
-    setWon(win);
     set_balance(Math.floor(balance + win));
 
     if (balance + win === 0) {
+      setLostMemModal(true);
       return set_is_lost(true);
     }
+
+    setWon(win);
 
     set_round_state("ended");
 
@@ -119,10 +123,24 @@ export function Controls() {
   useEffect(() => {
     if (round === null || round < 3) return;
 
-    if (players.length && players[0].id === 1) {
+    if (players.length === 1 && players[0].id === 1) {
+      set_is_won(true);
       setIsWon(true);
     }
   }, [players]);
+
+  //start leaderboard betting
+  function startLeaderboardBetting() {
+    const [pl, amount] = simulatePlayersData(players, balance);
+    // @ts-ignore
+    set_players(pl);
+    set_prize_pool(prize_pool + amount);
+    set_markets(MARKETS_DATA[round ?? 1]);
+
+    set_bets([]);
+
+    set_is_lost(true);
+  }
 
   const text = round === null ? "Start round" : "Skip round";
 
@@ -141,6 +159,7 @@ export function Controls() {
         isOpen={lostModal}
         onClose={() => {
           setLostModal(false);
+          startLeaderboardBetting();
         }}
       >
         <div className="flex flex-col px-4 py-9 items-center text-center">
@@ -152,7 +171,9 @@ export function Controls() {
             вы умерли
           </span>
 
-          <p className="mt-[26px] text-center text-black text-base leading-5 italic"></p>
+          <p className="mt-[26px] text-center text-black text-base leading-5 italic">
+            “Тот, кто не рискнул - выиграть не может.”
+          </p>
 
           <p className="text-[10px] text-end mt-2 leading-3 ml-auto mr-3">
             – книга мудрости
@@ -164,6 +185,46 @@ export function Controls() {
             className="text-sm mt-8 w-full h-10 rounded bg-primary-dark flex items-center justify-center text-white"
             onClick={() => {
               setLostModal(false);
+              startLeaderboardBetting();
+            }}
+          >
+            Поставь на короля
+          </button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={lostMemModal}
+        onClose={() => {
+          setLostMemModal(false);
+          startLeaderboardBetting();
+        }}
+      >
+        <div className="flex flex-col px-4 py-9 items-center text-center">
+          <span className="text-[20px] leading-[24px] font-medium">
+            BestBigBetter
+          </span>
+
+          <span className="mt-1.5 uppercase text-[#FF4944] text-[32px] leading-[24px] font-bold">
+            вы умерли
+          </span>
+
+          <p className="mt-[26px] text-center text-black text-base leading-5 italic">
+            “Иногда принятые решения сводят нас
+            <br />в могилу”
+          </p>
+
+          <p className="text-[10px] text-end mt-2 leading-3 ml-auto mr-3">
+            – книга мудрости
+            <br />
+            Беспощадных ставок
+          </p>
+
+          <button
+            className="text-sm mt-8 w-full h-10 rounded bg-primary-dark flex items-center justify-center text-white"
+            onClick={() => {
+              setLostMemModal(false);
+              startLeaderboardBetting();
             }}
           >
             Поставь на короля
@@ -316,7 +377,11 @@ export function Controls() {
             Беспощадных ставок
           </p>
 
-          <span className="flex items-center font-mono space-x-1 bloody text-[48px]">
+          <span className="text-[20px] text-[#E40101] font-bold uppercase mt-10 mb-4">
+            Эти кровавые деньги - ваши
+          </span>
+
+          <span className="flex items-center font-mono space-x-1 bloody text-[48px] mb-8">
             {prize_pool}{" "}
             <svg
               className="ml-1"

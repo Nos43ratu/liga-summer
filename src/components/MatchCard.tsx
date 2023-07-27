@@ -1,8 +1,8 @@
-import { Match } from "@/components/data/matches";
+import { generate_start_date, Match } from "@/components/data/matches";
 import Link from "next/link";
 import Image from "next/image";
 import { ClockIcon, FootballIcon, PlayersIcon } from "@/components/Icons";
-import { useTimer } from "@/components/useTimer";
+import { useTimerDown } from "@/components/useTimerDown";
 import { AnimateChange } from "@/components/animate-change";
 import { useEffect, useState } from "react";
 import { spans } from "next/dist/build/webpack/plugins/profiling-plugin";
@@ -12,6 +12,8 @@ type MatchCardProps = {
 };
 
 export function MatchCard({ match }: MatchCardProps) {
+  const date = generate_start_date(200);
+
   return (
     <div className="flex flex-col rounded-lg relative">
       <div className="absolute z-[10] w-full h-full rounded-lg overflow-hidden shadow-[13px_20px_12px_0px_rgba(66,139,99,0.43)_inset]">
@@ -41,7 +43,7 @@ export function MatchCard({ match }: MatchCardProps) {
             <div className="flex items-center space-x-1">
               <ClockIcon />
 
-              <Timer finish_date={match.start_date} />
+              <Timer finish_date={date} />
             </div>
           </div>
 
@@ -53,7 +55,7 @@ export function MatchCard({ match }: MatchCardProps) {
             <div className="flex items-center space-x-1">
               <PlayersIcon />
 
-              <Players players_count={45} />
+              <Players players_count={32} />
             </div>
           </div>
 
@@ -86,7 +88,7 @@ interface TimerProps {
 }
 
 function Timer({ finish_date }: TimerProps) {
-  const { minutes, seconds } = useTimer(finish_date);
+  const { minutes, seconds } = useTimerDown(finish_date);
 
   return (
     <span className="leading-[15px] text-sm font-bold">
@@ -105,7 +107,7 @@ function Players({ players_count }: PlayersProps) {
   useEffect(() => {
     const interval = setInterval(
       () => {
-        if (players < 100) {
+        if (players < 50) {
           set_players(players + randomInRange(1, 5));
         }
       },
@@ -117,7 +119,7 @@ function Players({ players_count }: PlayersProps) {
 
   return (
     <span className="leading-[15px] text-sm font-bold flex">
-      <AnimateChange value={players} className="origin-right" /> / 100
+      <AnimateChange value={players} className="origin-right" /> / 50
     </span>
   );
 }

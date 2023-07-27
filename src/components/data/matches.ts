@@ -16,7 +16,7 @@ export const MATCHES_DATA = [
   },
 ];
 
-function generate_start_date(offset: number) {
+export function generate_start_date(offset: number) {
   const finishDate = new Date();
   finishDate.setSeconds(finishDate.getSeconds() + offset);
 

@@ -11,9 +11,12 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 export function Bets() {
   const { markets } = useMarketsStateStore();
+  const { is_lost } = useUserStateStore();
   const [animationParent] = useAutoAnimate();
 
   if (markets.length === 0) return null;
+
+  if (is_lost) return null;
 
   return (
     <div className="flex flex-col p-3 mt-2 space-y-5" ref={animationParent}>

@@ -5,6 +5,7 @@ import { useUserStateStore } from "@/modules/game/model/user-state-store";
 
 export function Leaderboard() {
   const { round } = useGameStateStore();
+  const { is_lost } = useUserStateStore();
   const { players } = usePlayersStateStore();
 
   const [animationParent] = useAutoAnimate();
@@ -18,16 +19,52 @@ export function Leaderboard() {
       <div className="flex flex-col space-y-4 pb-10" ref={animationParent}>
         {players.map((player, index) =>
           player.id === 1 ? (
-            <div key={player.id} className="flex items-center justify-between">
-              <div className="flex space-x-3 items-center text-xs leading-[17px] text-primary font-bold">
-                <div className="w-[30px] h-[30px] rounded-full border-2 border-primary flex items-center justify-center">
-                  {round ? index + 1 : "..."}
+            is_lost ? null : (
+              <div
+                key={player.id}
+                className="flex items-center justify-between"
+              >
+                <div className="flex space-x-3 items-center text-xs leading-[17px] text-primary font-bold">
+                  <div className="w-[30px] h-[30px] rounded-full border-2 border-primary flex items-center justify-center">
+                    {round ? index + 1 : "..."}
+                  </div>
+
+                  <span className="">{player.name}</span>
                 </div>
 
-                <span className="">{player.name}</span>
+                <span className="font-bold text-primary">{player.balance}</span>
+              </div>
+            )
+          ) : is_lost ? (
+            <div className="flex flex-col space-y-2">
+              <div
+                key={player.id}
+                className="flex items-center justify-between"
+              >
+                <div className="flex space-x-3 items-center text-xs leading-[17px]">
+                  <div className="w-[30px] h-[30px] rounded-full border border-black flex items-center justify-center">
+                    {round ? index + 1 : "..."}
+                  </div>
+
+                  <span className="">{player.name}</span>
+                </div>
+
+                <span>{player.balance}</span>
               </div>
 
-              <span className="font-bold text-primary">{player.balance}</span>
+              <div className="flex space-x-1 w-full">
+                <button className="rounded flex items-center justify-between text-black border flex-1 border-primary px-4 py-3 leading-4 text-[13px]">
+                  <span className="text-[#7A7A7A]">Победит в раунде</span>
+
+                  <span>1.5</span>
+                </button>
+
+                <button className="rounded flex items-center justify-between text-black border flex-1 border-primary px-4 py-3 leading-4 text-[13px]">
+                  <span className="text-[#7A7A7A]">Победит в турнире</span>
+
+                  <span>1.5</span>
+                </button>
+              </div>
             </div>
           ) : (
             <div key={player.id} className="flex items-center justify-between">
