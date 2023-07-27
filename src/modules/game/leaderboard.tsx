@@ -94,7 +94,16 @@ export function Leaderboard() {
                       : "text-black",
                   )}
                 >
-                  <span className="text-[#7A7A7A]">Победит в раунде</span>
+                  <span
+                    className={twMerge(
+                      "text-[#7A7A7A]",
+                      aciteBet === player.id && betType === "round"
+                        ? "text-white"
+                        : "text-black",
+                    )}
+                  >
+                    Победит в раунде
+                  </span>
 
                   <span>{Math.round((index + 1) * 1.2 * 10) / 10}</span>
                 </button>
@@ -118,7 +127,16 @@ export function Leaderboard() {
                       : "text-black",
                   )}
                 >
-                  <span className="text-[#7A7A7A]">Победит в турнире</span>
+                  <span
+                    className={twMerge(
+                      "text-[#7A7A7A]",
+                      aciteBet === player.id && betType === "tournament"
+                        ? "text-white"
+                        : "text-black",
+                    )}
+                  >
+                    Победит в турнире
+                  </span>
 
                   <span>{(Math.round((index + 1) * 1.2 * 20) / 20) * 2}</span>
                 </button>
