@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ClockIcon, FootballIcon, PlayersIcon } from "@/components/Icons";
 import { useTimerDown } from "@/components/useTimerDown";
 import { AnimateChange } from "@/components/animate-change";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { spans } from "next/dist/build/webpack/plugins/profiling-plugin";
 
 type MatchCardProps = {
@@ -27,7 +27,17 @@ export function MatchCard({ match }: MatchCardProps) {
 
       <div className="mt-[503px] rounded-lg bg-white p-3 relative z-20 flex flex-col shadow-[-2px_-4px_4px_0px_rgba(0,0,0,0.25)]">
         <div className="flex flex-col space-y-1 text-center">
-          <h2 className="text-base leading-6 font-bold">{match.name}</h2>
+          <div className="flex justify-center space-x-5 items-center px-5">
+            <img
+              src="/spartak.png"
+              alt=""
+              className="w-10 h-10 object-contain"
+            />
+
+            <h2 className="text-base leading-6 font-bold">{match.name}</h2>
+
+            <img src="/cska.png" alt="" className="w-10 h-10 object-contain" />
+          </div>
 
           <span className="text-xs leading-[15px] font-bold text-text-secondary">
             {match.league}
